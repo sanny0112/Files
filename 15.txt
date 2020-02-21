@@ -1,0 +1,76 @@
+#include "stdafx.h"
+#include <math.h>
+#include <iostream>
+
+double fC(double x, int n);
+double fE(double x, int n);
+double fF(double x, int n);
+
+int main()
+{
+	double x,y,z,resC3,resF2,resE6,resF5,R;
+	scanf("%lf %lf %lf",&x,&y,&z);
+	resC3=fC(x, 3);
+	resF2=fF(y, 2);
+	resE6=fE(resF2, 6);
+	resF5=fF(z, 5);
+	printf("C{3}(%g)= %f F{2}(%g)= %f E{6}(%g)= %f F{5}(%g)= %f\n", x,resC3,y,resF2,resF2,resE6,z,resF5);
+	R=fC(x, 3)-fE(fF(y, 2), 6)+fF(z, 5);
+	printf("R= %f\n",R);
+	system("pause");
+}
+
+double fC(double x, int n) { 
+	double c1,c2,c3,ni;
+	c2=2*x; 
+	c3=4*x*x-2; 
+	switch (n) { 
+		case 1: return c2; 
+		case 2: return c3; 
+		default: 
+		for (int i=2;i<=n-1;i++) { 
+			c1=c2; 
+			c2=c3;
+			ni=i;
+			c3=2*x*c2-2*ni/(ni+1)*c1;
+		} 
+		return c3; 
+	} 
+}
+
+double fE(double x, int n) { 
+	double e1,e2,e3,ni;
+	e2=x; 
+	e3=x*x-1; 
+	switch (n) { 
+		case 1: return e2; 
+		case 2: return e3; 
+		default: 
+		for (int i=2;i<=n-1;i++) { 
+			e1=e2; 
+			e2=e3;
+			ni=i;
+			e3=x/(ni+1)*e2-e1;
+		} 
+		return e3; 
+	} 
+}
+
+
+double fF(double x, int n) { 
+	double f1,f2,f3,ni;
+	f2=1; 
+	f3=x*x-1; 
+	switch (n) { 
+		case 1: return f2; 
+		case 2: return f3; 
+		default: 
+		for (int i=2;i<=n-1;i++) { 
+			f1=f2; 
+			f2=f3;
+			ni=i;
+			f3=(2*ni+1)/(ni*ni)*f2-ni/(ni+1)*x*f1;
+		} 
+		return f3; 
+	} 
+}

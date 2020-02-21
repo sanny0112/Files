@@ -1,0 +1,77 @@
+#include "stdafx.h"
+#include "math.h"
+#include <iostream>
+
+void table(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int));
+float f1(int n);
+float f2(int n);
+float f3(int n);
+
+int main() {
+	float min, max, average;
+	int iMin, iMax, iAverage;
+	table(min, iMin, max, iMax, average, iAverage, f1); 
+	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
+	table(min, iMin, max, iMax, average, iAverage, f2); 
+	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
+	table(min, iMin, max, iMax, average, iAverage, f3); 
+	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
+	system("pause");
+}
+
+void table(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int)) {
+	float x, sum, e, average_temp;
+	int i;
+	min = f(1);
+	max = min;
+	sum = min;
+	average_index = 1;
+	min_index = 1;
+	min_index = 1;
+	printf(" +---------+----------+\n");
+	printf(" I         I          I\n");
+	printf(" I    i    I    u{i}  I\n");
+	printf(" I         I          I\n");
+	printf(" +---------+----------+\n");
+	printf(" I     1   I  %+5.3f  I\n", min);
+	for(i=2; i<26; i++) {
+		x = f(i);
+		sum = sum + x;
+		if (x < min) {
+			min = x;
+			min_index = i;
+		}
+		if (x > max) {
+			max = x;
+			max_index = i;
+		}
+		printf(" I %5i   I  %+5.3f I\n",i,x);
+	}
+	printf(" +---------+----------+\n");
+	e = max - min;
+	average_temp = sum / 25;
+	for(i=1; i<26; i++)
+		if (abs(f(i) - average_temp) < e) {
+			average_index = i;
+			e = abs(f(i) - average_temp);
+		}
+	average = f(average_index);
+}
+
+float f1(int n) {
+	float a;
+	a=5*cos(4*pow(n, 0.5));
+	return a;
+}
+
+float f2(int n) {
+	float a;
+	a=pow(n, 1.5)*exp(-0.1*n);
+	return a;
+}
+
+float f3(int n) {
+	float a;
+	a=8*n/(1+0.05*pow(n, 1.5));
+	return a;
+}

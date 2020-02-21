@@ -1,0 +1,41 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string.h>
+
+int main()
+{
+    char string[128], word[128];
+    int i, j = -1, count = 0, gl = 0, number_word = 0, max_number_word;
+    double per, max_per=0;
+    gets(string);
+    for (i=0; i <= strlen(string); i++) {
+        if (string[i] != ' ' && string[i] != '\0') {
+            count++;
+            if (string[i] == 'A' || string[i] == 'E' || string[i] == 'I' || string[i] == 'O' || string[i] == 'U')
+                gl++;
+        }
+		else {
+			number_word++;
+			per = (float)gl/count;
+			count = 0;
+			gl = 0;
+			if (per > max_per) {
+				max_number_word = number_word;
+				max_per = per;
+			}
+		}
+	}
+	number_word = 1;
+	for (i=0; i <= strlen(string); i++)
+		if (string[i] != ' ' && string[i] != '\0') {
+			if (number_word == max_number_word) {
+				j++;
+				word[j] = string[i];
+			}
+		}
+		else
+			number_word++;
+	word[j+1] = '\0';
+	puts(word);
+    system("pause");
+}

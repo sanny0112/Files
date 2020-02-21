@@ -1,0 +1,87 @@
+#include "stdafx.h"
+#include <iostream>
+//https://www.desmos.com/calculator/qorie6psvb
+struct TPoint {
+	double x, y;
+};
+
+struct TCircle {
+	double x, y, R;
+};
+
+const int N=9;
+struct TPoint Array_Points[N]={{0,-17},{9,-26},{5,-6},{9,-8},{5,-12},{14,-24},{16,-24},{3,-19},{18,-13}};//\left(x-9\right)^{2}+\left(y+17\right)^{2}=81
+
+TCircle getCircle(TPoint a, TPoint b, TPoint c);
+double Dist(double x1,double y1,double x2,double y2);
+bool checkTriangle(TPoint a, TPoint b, TPoint c);
+int count(TPoint A[], int Alength, TCircle Circle);
+
+int main() {
+	TCircle currentCircle, desiredCircle;
+	int i,j,k,amount,min=N+1;
+	for (i = 0; i < N; i++)
+		for (j = i+1; j < N; j++)
+			for (k = j+1; k < N; k++)
+				if (checkTriangle(Array_Points[i], Array_Points[j], Array_Points[k])) {
+					currentCircle = getCircle(Array_Points[i], Array_Points[j], Array_Points[k]);
+					amount= count(Array_Points, N, currentCircle);
+					//printf("[%d] (%g, %g), R=%g\n",amount, currentCircle.x,currentCircle.y,currentCircle.R);
+					//if (amount == 0)
+					//	printf("Circle (%7.2f, %7.2f), \tR=%g\n",currentCircle.x,currentCircle.y,currentCircle.R);
+					if (amount < min) {
+						min = amount;
+						desiredCircle = currentCircle;
+					}
+				}
+	if (min != N+1)
+		printf("Circle (%g, %g), R=%g\n",desiredCircle.x,desiredCircle.y,desiredCircle.R);
+	else
+		printf("Circle doesn't exist\n");
+	system("pause");
+	return 0;
+}
+
+double Dist(double x1,double y1,double x2,double y2) {
+	double temp=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+	return temp;
+}
+
+bool checkTriangle(TPoint a, TPoint b, TPoint c) {
+	double ab,ac,bc;
+	bool f;
+	ab = Dist(a.x,a.y,b.x,b.y);
+	ac = Dist(a.x,a.y,c.x,c.y);
+	bc = Dist(b.x,b.y,c.x,c.y);
+	f= ab+bc>ac && ab+ac>bc && bc+ac>ab;
+	return f;
+}
+
+TCircle getCircle(TPoint a, TPoint b, TPoint c) {
+	struct TCircle temp;
+	double denominator= a.x*(b.y-c.y)+b.x*(c.y-a.y)+c.x*(a.y-b.y);
+	if (denominator != 0) {
+		temp.x= -0.5*(a.y*(b.x*b.x+b.y*b.y-c.x*c.x-c.y*c.y)+b.y*(c.x*c.x+c.y*c.y-a.x*a.x-a.y*a.y)+c.y*(a.x*a.x+a.y*a.y-b.x*b.x-b.y*b.y))/denominator;
+		temp.y= 0.5*(a.x*(b.x*b.x+b.y*b.y-c.x*c.x-c.y*c.y)+b.x*(c.x*c.x+c.y*c.y-a.x*a.x-a.y*a.y)+c.x*(a.x*a.x+a.y*a.y-b.x*b.x-b.y*b.y))/denominator;
+	}
+	else {
+		temp.x = 0;
+		temp.y = 0;
+	}
+	temp.R= Dist(temp.x,temp.y,a.x,a.y);
+	return temp;
+}
+
+int count(TPoint A[], int Alength, TCircle Circle) {
+	int temp,i,in=0,out=0;
+	double distance;
+	for (i=0; i<Alength; i++) {
+		distance= Dist(Circle.x,Circle.y,A[i].x,A[i].y);
+		if (distance < Circle.R)
+			in++;
+		else if (distance > Circle.R)
+			out++;
+	}
+	temp= abs(in-out);
+	return temp;
+}
