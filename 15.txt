@@ -12,15 +12,6 @@ int main()
 	double x,y,z,Result;
 	printf("Input x, y, z: ");
 	scanf("%lf %lf %lf",&x,&y,&z);
-	/*
-	double resC3,resF2,resE6,resF5;
-	resC3=fC(x, 3);
-	resF2=fF(y, 2);
-	resE6=fE(resF2, 6);
-	resF5=fF(z, 5);
-	printf("C{3}(%g)= %f F{2}(%g)= %f E{6}(%g)= %f F{5}(%g)= %f\n", x,resC3,y,resF2,resF2,resE6,z,resF5);
-	R=fC(x, 3)-fE(fF(y, 2), 6)+fF(z, 5);
-	*/
 	Result = R(x,y,z);
 	printf("R(%g,%g,%g)= %f\n",x,y,z,Result);
 	system("pause");
