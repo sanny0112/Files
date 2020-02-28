@@ -2,7 +2,7 @@
 #include "math.h"
 #include <iostream>
 
-void table(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int));
+void data_calculation(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int));
 float f1(int n);
 float f2(int n);
 float f3(int n);
@@ -10,16 +10,19 @@ float f3(int n);
 int main() {
 	float min, max, average;
 	int iMin, iMax, iAverage;
-	table(min, iMin, max, iMax, average, iAverage, f1); 
+	printf("Function number 1\n");
+	data_calculation(min, iMin, max, iMax, average, iAverage, f1); 
 	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
-	table(min, iMin, max, iMax, average, iAverage, f2); 
+	printf("Function number 2\n");
+	data_calculation(min, iMin, max, iMax, average, iAverage, f2); 
 	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
-	table(min, iMin, max, iMax, average, iAverage, f3); 
+	printf("Function number 3\n");
+	data_calculation(min, iMin, max, iMax, average, iAverage, f3); 
 	printf("Result: minimum: u{%i}= %f, maximum: u{%i}= %f, average: u{%i}= %f\n\n", iMin,min,iMax,max,iAverage,average);
 	system("pause");
 }
 
-void table(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int)) {
+void data_calculation(float & min, int & min_index, float & max, int & max_index, float & average, int & average_index, float (*f) (int)) {
 	float x, sum, e, average_temp;
 	int i;
 	min = f(1);
@@ -33,7 +36,7 @@ void table(float & min, int & min_index, float & max, int & max_index, float & a
 	printf(" I    i    I    u{i}  I\n");
 	printf(" I         I          I\n");
 	printf(" +---------+----------+\n");
-	printf(" I     1   I  %+5.3f  I\n", min);
+	printf(" I     1   I %+7.3f  I\n", min);
 	for(i=2; i<26; i++) {
 		x = f(i);
 		sum = sum + x;
@@ -45,7 +48,7 @@ void table(float & min, int & min_index, float & max, int & max_index, float & a
 			max = x;
 			max_index = i;
 		}
-		printf(" I %5i   I  %+5.3f I\n",i,x);
+		printf(" I %5i   I %+7.3f  I\n",i,x);
 	}
 	printf(" +---------+----------+\n");
 	e = max - min;
@@ -59,15 +62,13 @@ void table(float & min, int & min_index, float & max, int & max_index, float & a
 }
 
 float f1(int n) {
-	float a;
-	a=5*cos(4*pow(n, 0.5));
-	return a;
+	float result= 5*cos(4*pow(n, 0.5));
+	return result;
 }
 
 float f2(int n) {
-	float a;
-	a=pow(n, 1.5)*exp(-0.1*n);
-	return a;
+	float result= pow(n, 1.5)*exp(-0.1*n);
+	return result;
 }
 
 float f3(int n) {
