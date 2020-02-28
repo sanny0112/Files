@@ -7,6 +7,7 @@ int main()
     char string[128], word[128];
     int i, j = -1, count = 0, gl = 0, number_word = 0, max_number_word;
     double per, max_per=0;
+	printf("Input string: ");
     gets(string);
     for (i=0; i <= strlen(string); i++) {
         if (string[i] != ' ' && string[i] != '\0') {
@@ -36,6 +37,7 @@ int main()
 		else
 			number_word++;
 	word[j+1] = '\0';
+	printf("Maximum vowel percentage in a word: ");
 	puts(word);
     system("pause");
 }
