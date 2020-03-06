@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
-//https://www.desmos.com/calculator/qorie6psvb
+
 struct TPoint {
 	double x, y;
 };
@@ -10,12 +10,12 @@ struct TCircle {
 };
 
 const int N=9;
-struct TPoint Array_Points[N]={{0,-17},{9,-26},{5,-6},{9,-8},{5,-12},{14,-24},{16,-24},{3,-19},{18,-13}};//\left(x-9\right)^{2}+\left(y+17\right)^{2}=81
+struct TPoint Array_Points[N]={{0,-17},{9,-26},{5,-6},{9,-8},{5,-12},{14,-24},{16,-24},{3,-19},{18,-13}};
 
 TCircle getCircle(TPoint a, TPoint b, TPoint c);
 double Dist(double x1,double y1,double x2,double y2);
 bool checkTriangle(TPoint a, TPoint b, TPoint c);
-int count(TPoint A[], int Alength, TCircle Circle);
+int Count(TPoint A[], int ALength, TCircle Circle, int pA, int pB, int pC);
 
 int main() {
 	TCircle currentCircle, desiredCircle;
@@ -25,10 +25,7 @@ int main() {
 			for (k = j+1; k < N; k++)
 				if (checkTriangle(Array_Points[i], Array_Points[j], Array_Points[k])) {
 					currentCircle = getCircle(Array_Points[i], Array_Points[j], Array_Points[k]);
-					amount= count(Array_Points, N, currentCircle);
-					//printf("[%d] (%g, %g), R=%g\n",amount, currentCircle.x,currentCircle.y,currentCircle.R);
-					//if (amount == 0)
-					//	printf("Circle (%7.2f, %7.2f), \tR=%g\n",currentCircle.x,currentCircle.y,currentCircle.R);
+					amount= Count(Array_Points, N, currentCircle, i, j, k);
 					if (amount < min) {
 						min = amount;
 						desiredCircle = currentCircle;
@@ -37,7 +34,7 @@ int main() {
 	if (min != N+1)
 		printf("Circle (%g, %g), R=%g\n",desiredCircle.x,desiredCircle.y,desiredCircle.R);
 	else
-		printf("Circle doesn't exist\n");
+		printf("Circle does not exist\n");
 	system("pause");
 	return 0;
 }
@@ -72,16 +69,18 @@ TCircle getCircle(TPoint a, TPoint b, TPoint c) {
 	return temp;
 }
 
-int count(TPoint A[], int Alength, TCircle Circle) {
+int Count(TPoint A[], int ALength, TCircle Circle, int pA, int pB, int pC) {
 	int temp,i,in=0,out=0;
 	double distance;
-	for (i=0; i<Alength; i++) {
-		distance= Dist(Circle.x,Circle.y,A[i].x,A[i].y);
-		if (distance < Circle.R)
-			in++;
-		else if (distance > Circle.R)
-			out++;
+	for (i=0; i<ALength; i++) {
+		if (i != pA && i != pB && i != pC) {
+			distance= Dist(Circle.x,Circle.y,A[i].x,A[i].y);
+			if (distance < Circle.R)
+				in++;
+			else if (distance > Circle.R)
+				out++;
+		}
 	}
-	temp= abs(in-out);
+	temp= abs(in-out); // Второй вариант решения: temp = in-out;
 	return temp;
 }
