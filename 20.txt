@@ -1,0 +1,187 @@
+#include "stdafx.h"
+#include <string.h>
+#include <iostream>
+
+const int S_SIZE=3, C_SIZE=3, R_SIZE=3;
+
+struct TStudents {
+	int SNum;
+	char SName[16];
+	char SGroup[7];
+};
+
+struct TCourses {
+	int CNum;
+	char Course[16];
+	int Size;
+};
+
+struct TRegister {
+	int SNum;
+	int CNum;
+	int Score;
+};
+
+typedef TStudents TStudTable[S_SIZE];
+typedef TCourses TCoursTable[C_SIZE];
+typedef TRegister TRegTable[R_SIZE];
+
+void PrintStudents(TStudTable Stud, int N);
+void PrintCourses(TCoursTable Cours, int N);
+void PrintRegister(TRegTable Reg, int N);
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	TStudTable StudTable={{15,"Петров","КЭ-118"},{19,"Иванов","КЭ-108"},{37,"Трушин","КЭ-118"}};
+	TCoursTable CoursTable={{1,"Алгебра",36},{3,"Начерт. геом.",28},{6,"Языки прог.",32}};
+	TRegTable RegTable={{15,1,3},{19,3,4},{37,1,5}};
+	PrintStudents(StudTable, S_SIZE);
+	PrintCourses(CoursTable, C_SIZE);
+	PrintRegister(RegTable, R_SIZE);
+	system("pause");
+}
+
+void PrintStudents(TStudTable Stud, int N) {
+	printf("************************************\n");
+	printf("* S_ID *      Фамилия    *  Группа *\n");
+	printf("************************************\n");
+	for (int i=0; i<N; i++)
+		printf("* %4i * %15s * %7s *\n",Stud[i].SNum,Stud[i].SName,Stud[i].SGroup);
+	printf("************************************\n\n");
+}
+
+void PrintCourses(TCoursTable Cours, int N) {
+	printf("************************************\n");
+	printf("* C_ID *     Название    * Объем,ч *\n");
+	printf("************************************\n");
+	for (int i=0; i<N; i++)
+		printf("* %4i * %15s * %7i *\n",Cours[i].CNum,Cours[i].Course,Cours[i].Size);
+	printf("************************************\n\n");
+}
+
+void PrintRegister(TRegTable Reg, int N) {
+	printf("************************************\n");
+	printf("* S_ID *   Номер курса   *  Оценка *\n");
+	printf("************************************\n");
+	for (int i=0; i<N; i++)
+		printf("* %4i * %15i * %7i *\n",Reg[i].SNum,Reg[i].CNum,Reg[i].Score);
+	printf("************************************\n\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+const int NE=5, ND=3;
+typedef char TStr[25];
+
+struct TEmp {
+	int ENum;
+	TStr EName;
+	double ESal;
+	int DNum;
+};
+
+struct TDept{
+	int DNum;
+	TStr DName;
+};
+
+typedef TEmp TEmpTable[NE];
+typedef TDept TDeptTable[ND];
+int FindDeptNum(TDeptTable D, TStr DeptName);
+int MakeList(TEmpTable Emp,TEmpTable EmpList,int DNum);
+void PrintDept(TDeptTable Dept, int ND);
+void PrintEmp(TEmpTable Emp,int N);
+
+int main() {
+	TEmpTable EmpTable={{21,"Smith", 1030.0,102},{12,"Brosnan",630.0,300},{35,"Hackman",1234.5,200},{14,"Clooney",678.9,300},{51,"Jason", 1011.1,300}};
+	TDeptTable DeptTable={{102,"Economic"},{300,"Office"},{200,"Planning"}};
+	TEmpTable EmpList;
+	TStr DeptName;
+	int DNum,LNum;
+	puts("Name of department");
+	gets(DeptName);
+	PrintEmp(EmpTable,NE);
+	PrintDept(DeptTable,ND);
+	DNum=FindDeptNum(DeptTable,DeptName);
+	if (DNum>=0) {
+		LNum=MakeList(EmpTable,EmpList,DNum);
+		printf("\n\n");
+		printf("Department %s\n",DeptName);
+		if (LNum>0)
+			PrintEmp(EmpList,LNum);
+		else
+			printf(" No workers\n");
+	}
+	else
+		printf("No department %s\n",DeptName);
+	system("pause");
+}
+
+int FindDeptNum(TDeptTable D,TStr DeptName){
+	int i,DNum;
+	i=0;
+	while (i<ND && strcmp(D[i].DName,DeptName))
+		i++;
+	if (i==ND)
+		DNum=-1;
+	else
+		DNum=D[i].DNum;
+	return DNum;
+}
+
+int MakeList(TEmpTable Emp,TEmpTable EmpList,int DNum){
+	int i,k;
+	k=0;
+	for (i=0; i<NE;i++)
+		if (Emp[i].DNum==DNum) {
+			EmpList[k]=Emp[i];
+			k=k+1;
+		}
+	return k;
+}
+
+void PrintDept(TDeptTable Dept, int N){
+	int i;
+	printf("\n");
+	printf("***************************\n");
+	printf("* N_dep *			DName *\n");
+	printf("***************************\n");
+	for (i=0;i<N;i++)
+		printf("* %4i * %15s *\n",Dept[i].DNum,Dept[i].DName);
+}
+
+void PrintEmp(TEmpTable Emp,int N){
+	int i;
+	printf("\n");
+	printf("******************************************\n");
+	printf("* N_emp * EName * Salary * N_ dep        *\n");
+	printf("******************************************\n");
+	for (i=0;i<N;i++)
+		printf("* %4i * %10s * %8.2f * %4i *\n",Emp[i].ENum,Emp[i].EName,Emp[i].ESal, Emp[i].DNum);
+}
+*/
