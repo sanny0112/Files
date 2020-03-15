@@ -106,7 +106,7 @@ void SortStudents(TStudTable A, TStudTable B, int N) {
 }
 
 void PrintStudents(TStudTable Stud, int N) {
-	printf("************************************\n");
+	printf("************[ СТУДЕНТЫ ]************\n");
 	printf("* S_ID *     Фамилия     *  Группа *\n");
 	printf("************************************\n");
 	for (int i=0; i<N; i++)
@@ -115,7 +115,7 @@ void PrintStudents(TStudTable Stud, int N) {
 }
 
 void PrintCourses(TCoursTable Cours, int N) {
-	printf("************************************\n");
+	printf("**************[ КУРСЫ ]*************\n");
 	printf("* C_ID *     Название    * Объём,ч *\n");
 	printf("************************************\n");
 	for (int i=0; i<N; i++)
@@ -124,7 +124,7 @@ void PrintCourses(TCoursTable Cours, int N) {
 }
 
 void PrintRegister(TRegTable Reg, int N) {
-	printf("************************************\n");
+	printf("************[ ВЕДОМОСТЬ ]***********\n");
 	printf("* S_ID *   Номер курса   *  Оценка *\n");
 	printf("************************************\n");
 	for (int i=0; i<N; i++)
