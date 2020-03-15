@@ -57,7 +57,7 @@ void StudentsList(TStudTable Stud, int NS, TRegTable Reg, int NR) {
     for (i=0; i<NS; i++) {
         if (i > 0 && strcmp(Stud[i].SGroup,Stud[i-1].SGroup) != 0) {
             if (k == 0)
-                printf("*  В группе %6s нет отличников  *\n", Stud[i-1].SGroup);
+                printf("*  В группе %s нет отличников  *\n", Stud[i-1].SGroup);
             printf("************************************\n");
 			k=0;
         }
@@ -67,7 +67,7 @@ void StudentsList(TStudTable Stud, int NS, TRegTable Reg, int NR) {
         }
     }
     if (k == 0)
-        printf("*  В группе %6s нет отличников  *\n", Stud[i-1].SGroup);
+        printf("*  В группе %s нет отличников  *\n", Stud[i-1].SGroup);
     printf("************************************\n");
 }
 
