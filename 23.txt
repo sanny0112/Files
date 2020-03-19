@@ -1,0 +1,29 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string.h>
+
+typedef char TStr[128];
+void DeleteSeries(TStr & str);
+
+int main() {
+    TStr string;
+	printf("Input string: ");
+    gets(string);
+	DeleteSeries(string);
+	puts(string);
+    system("pause");
+}
+
+void DeleteSeries(TStr & str) {
+	int i,k=0;
+	TStr str2;
+	str2[0] = str[0];
+	for (i=1; i < strlen(str); i++) {
+		if (str[i] != str[i-1]) {
+			k++;
+			str2[k] = str[i];
+		}
+	}
+	str2[k+1]='\0';
+	strcpy(str,str2);
+}
