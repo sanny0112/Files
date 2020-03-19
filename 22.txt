@@ -1,0 +1,135 @@
+#include "stdafx.h"
+#include <stdlib.h>
+#include <iostream>
+
+const char program = 'b'; // Поставьте "a" или "b" для активации разных программ
+
+struct TNode {
+	int Num;
+	TNode * Next;
+};
+
+typedef TNode * PNode;
+
+void addNumber(int x, PNode & Head, PNode & Head2);
+void InsertAtEnd(int x,PNode & Head);
+void CombineList(PNode & Head, PNode & Head2);
+void PrintList(PNode P);
+void WriteList(PNode P, FILE *f);
+void DeleteList(PNode & Head);
+
+int main() {
+    if (program == 'a') {
+		FILE * t;
+		FILE * f;
+		int k;
+		if ((t=fopen("data.txt","r"))==NULL || (f=fopen("input.bin","wb"))==NULL) {
+			printf ("Files not open");
+			exit(1);
+		}
+		printf("The contents of the file \"data.txt\":\n");
+		while (fscanf(t,"%i",&k)>0) {
+			printf("%i ",k);
+			fwrite(&k,sizeof(k),1,f);
+		}
+		printf("\nNumbers successfully written to file \"input.bin\"\n");
+		fclose(t);
+		fclose(f);
+    }
+    else if (program == 'b') {
+		PNode Head=NULL, Head2=NULL;
+		FILE * t;
+		FILE * f;
+		int k;
+		bool flag;
+		if ((t=fopen("input.bin","rb"))==NULL || (f=fopen("output.txt","w"))==NULL) {
+			printf ("Files not open");
+			exit(1);
+		}
+		while (fread(&k,sizeof(k),1,t))
+			addNumber(k, Head, Head2);
+		CombineList(Head, Head2);
+		DeleteList(Head2);
+		printf("The contents of the file \"output.txt\":\n");
+		WriteList(Head, f);
+		PrintList(Head);
+		PrintList(Head2);
+		DeleteList(Head);
+		PrintList(Head);
+		fclose(t);
+		fclose(f);
+    }
+    system("pause");
+}
+
+void addNumber(int x, PNode & Head, PNode & Head2) {
+	PNode P,Q,R;
+	if (x > 0)
+		InsertAtEnd(x,Head);
+	else if (x < 0)
+		InsertAtEnd(x,Head2);
+}
+
+void InsertAtEnd(int x, PNode & Head) {
+	PNode P,Q,R;
+	if (Head==NULL) {
+		Q=(PNode) malloc(sizeof(TNode));
+		Q->Num=x;
+		Q->Next=NULL;
+		Head=Q;
+	}
+	else {
+		R=Head;
+		P=Head->Next;
+		while (P!=NULL) {
+			R=P;
+			P=P->Next;
+		}
+		Q=(PNode) malloc(sizeof(TNode));
+		Q->Num=x;
+		Q->Next=NULL;
+		R->Next=Q;
+	}
+}
+
+void CombineList(PNode & Head, PNode & Head2) {
+	if (Head2!=NULL) {
+		PNode P=Head2->Next;
+		InsertAtEnd(Head2->Num, Head);
+		while (P!=NULL) {
+			InsertAtEnd(P->Num, Head);
+			P=P->Next;
+		}
+	}
+}
+
+void PrintList(PNode P) {
+	if (P==NULL)
+		printf("List empty\n");
+	else {
+		while (P!=NULL) {
+			printf("%i ",P->Num);
+			P=P->Next;
+		}
+		printf("\n");
+	}
+}
+
+void WriteList(PNode P, FILE *f) {
+	int x;
+	while (P!=NULL) {
+		fprintf(f,"%i ",P->Num);
+		P=P->Next;
+	}
+}
+
+void DeleteList(PNode & Head) {
+	PNode P,Q;
+	P=Head;
+	while (P!=NULL) {
+		Q=P->Next;
+		free(P);
+		P=Q;
+	}
+	Head=NULL;
+}
