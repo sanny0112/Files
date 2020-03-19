@@ -41,7 +41,6 @@ int main() {
 		FILE * t;
 		FILE * f;
 		int k;
-		bool flag;
 		if ((t=fopen("input.bin","rb"))==NULL || (f=fopen("output.txt","w"))==NULL) {
 			printf ("Files not open");
 			exit(1);
