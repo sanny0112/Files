@@ -48,13 +48,13 @@ int main() {
 		while (fread(&k,sizeof(k),1,t))
 			addNumber(k, Head, Head2);
 		CombineList(Head, Head2);
-		DeleteList(Head2);
 		printf("The contents of the file \"output.txt\":\n");
 		WriteList(Head, f);
 		PrintList(Head);
-		PrintList(Head2);
 		DeleteList(Head);
+		DeleteList(Head2);
 		PrintList(Head);
+		PrintList(Head2);
 		fclose(t);
 		fclose(f);
     }
