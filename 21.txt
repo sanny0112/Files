@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 
-const char program = 'a'; // Поставьте "a" или "b" для активации разных программ
+const char program = 'b'; // Поставьте "a" или "b" для активации разных программ
 
 int main() {
     FILE *fsr;
