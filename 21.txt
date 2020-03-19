@@ -36,15 +36,15 @@ int main() {
             }
             else
                 flag = true;
-		if (flag) {
-			rewind(fsr);
-			while (fread(&k,sizeof(k),1,fsr)) 
-			if (k%2 != 0) {
-				fwrite(&k,sizeof(k),1,gsr);
-				printf("%i ",k);
-			}
+	if (flag) {
+		rewind(fsr);
+		while (fread(&k,sizeof(k),1,fsr)) 
+		if (k%2 != 0) {
+			fwrite(&k,sizeof(k),1,gsr);
+			printf("%i ",k);
 		}
-		printf("\n");
+	}
+	printf("\n");
         fclose(gsr);
     }
     fclose(fsr);
