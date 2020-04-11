@@ -42,7 +42,6 @@ void InputFakeTree(TItem Item, PNode & Head) {
 
 void  getElement(TItem & Item, PNode Head, int Num) {
 	int i=1;
-	bool f;
 	PNode R, P;
 	R = Head;
 	P = Head->Right;
