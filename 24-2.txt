@@ -1,0 +1,302 @@
+#include "stdafx.h"
+#include <iostream>
+#include <windows.h>
+
+typedef char text[32];
+
+struct RGB {
+	int red,green,blue;
+};
+
+RGB RGB_Input(int r, int g, int b) {
+	RGB Temp;
+	Temp.red = r;
+	Temp.green = g;
+	Temp.blue = b;
+	return Temp;
+}
+
+class TModelWindow {
+protected:
+	text Title;
+	int x,y,w,h,Screen_Resolution_W,Screen_Resolution_H;
+	RGB Color;
+	bool hidden,frame;
+	void Create(text _Title, int _x, int _y, int _w, int _h, RGB _Color, bool _hidden, bool _frame);
+	bool IsInDisplay(int SRW, int SRH, int _x, int _y, int _w, int _h);
+public:
+	void BuildWindow(void);
+	void PollingWindow(void);
+	void SetScreenResolution(void);
+	void HorizontalShift(void);
+	void VerticalShift(void);
+	void HorizontalResize(void);
+	void VerticalResize(void);
+	void ChangeColor(void);
+	void ChangeVisible(void);
+	void ChangeFrame(void);
+	void FileWrite(void);
+};
+
+void TModelWindow::SetScreenResolution() {
+	int i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Введите разрешение экрана > ");
+		scanf("%i %i", &Screen_Resolution_W, &Screen_Resolution_H);
+		i++;
+	} while (!(Screen_Resolution_W > 0 && Screen_Resolution_H > 0));
+	return;
+}
+
+bool TModelWindow::IsInDisplay(int SRW, int SRH, int _x, int _y, int _w, int _h) {
+	if (_x+_w <= SRW && _y+_h <= SRH)
+		return true;
+	return false;
+}
+
+void TModelWindow::Create(text _Title, int _x, int _y, int _w, int _h, RGB _Color, bool _hidden, bool _frame) {
+	strcpy(Title,_Title); x=_x; y=_y; w=_w; h=_h; Color=_Color; hidden=_hidden; frame=_frame;
+	return;
+}
+
+void TModelWindow::HorizontalShift(void) {
+	int i=0,x_shift;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Сдвинуть по горизонтали на > ");
+		scanf("%i", &x_shift);
+		i++;
+	} while (!IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,x+x_shift,y,w,h));
+	x += x_shift;
+	return;
+}
+
+void TModelWindow::VerticalShift(void) {
+	int i=0,y_shift;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Сдвинуть по вертикали на > ");
+		scanf("%i", &y_shift);
+		i++;
+	} while (!IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,x,y+y_shift,w,h));
+	y += y_shift;
+	return;
+}
+
+void TModelWindow::HorizontalResize(void) {
+	int i=0,w_resize;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Изменить высоту на > ");
+		scanf("%i", &w_resize);
+		i++;
+	} while (!(w+w_resize>0 && IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,x,y,w+w_resize,h)));
+	w += w_resize;
+	return;
+}
+
+void TModelWindow::VerticalResize(void) {
+	int i=0,h_resize;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Изменить ширину на > ");
+		scanf("%i", &h_resize);
+		i++;
+	} while (!(h+h_resize>0 && IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,x,y,w,h+h_resize)));
+	h += h_resize;
+	return;
+}
+
+void TModelWindow::ChangeColor(void) {
+	int r,g,b,i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Введите цвет окна > ");
+		scanf("%i %i %i", &r, &g, &b);
+		i++;
+	} while (!(r>=0 && r<256 && g>=0 && g<256 && b>=0 && b<256));
+	Color = RGB_Input(r,g,b);
+}
+
+void TModelWindow::ChangeVisible(void) {
+	int i=0,_temp;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Видимость окна > ");
+		scanf("%i",&_temp);
+		i++;
+	} while (!(_temp==0 || _temp==1));
+	hidden = _temp==0 ? true : false;
+}
+
+void TModelWindow::ChangeFrame(void) {
+	int i=0,_temp;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Наличие рамок > ");
+		scanf("%i",&_temp);
+		i++;
+	} while (!(_temp==0 || _temp==1));
+	frame = _temp==0 ? false : true;
+}
+
+void TModelWindow::FileWrite(void) {
+	FILE *f;
+	if ((f=fopen("Result.txt","w"))==NULL) {
+        printf("Не удалось открыть файл");
+        exit(1);
+    }
+	fprintf(f,"==========[ ОПРОС ОКНА ]==========\n");
+	fprintf(f,"Заголовок: %s\n", Title);
+	fprintf(f,"Размеры: x%i y%i w%i h%i\n", x,y,w,h);
+	fprintf(f,"Цвет: rgb(%i, %i, %i)\n", Color.red,Color.green,Color.blue);
+	fprintf(f,"Видимость: ");
+	if (hidden)
+		fprintf(f,"FALSE\n");
+	else fprintf(f,"TRUE\n");
+	fprintf(f,"Рамки: ");
+	if (frame)
+		fprintf(f,"TRUE");
+	else fprintf(f,"FALSE");
+	fprintf(f,"\n==================================\n");
+	fclose(f);
+}
+
+void TModelWindow::PollingWindow(void) {
+	printf("==========[ ОПРОС ОКНА ]==========\n");
+	printf("Заголовок: %s\n", Title);
+	printf("Размеры: x%i y%i w%i h%i\n", x,y,w,h);
+	printf("Цвет: rgb(%i, %i, %i)\n", Color.red,Color.green,Color.blue);
+	printf("Видимость: ");
+	if (hidden)
+		printf("FALSE\n");
+	else printf("TRUE\n");
+	printf("Рамки: ");
+	if (frame)
+		printf("TRUE");
+	else printf("FALSE");
+	printf("\n==================================\n");
+}
+
+void TModelWindow::BuildWindow(void) {
+	int _x,_y,_w,_h,i=0,r,g,b;
+	text _Title;
+	bool _hidden,_frame;
+	if (!(Screen_Resolution_W > 0 && Screen_Resolution_H > 0)) {
+		printf("Сначала установите разрешение экрана\n");
+		return;
+	}
+	printf("==========[ МАСТЕР ОКОН ]=========\n");
+	printf("Введите заголовок окна > ");
+	do {
+		gets(_Title);
+	} while (strlen(_Title)==0);
+	i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Введите координаты окна > ");
+		scanf("%i %i", &_x, &_y);
+		i++;
+	} while (!(_x >= 0 && _y >= 0 && IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,_x,_y,1,1)));
+	i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Введите размер окна > ");
+		scanf("%i %i", &_w, &_h);
+		i++;
+	} while (!(_w > 0 && _h > 0 && IsInDisplay(Screen_Resolution_W,Screen_Resolution_H,_x,_y,_w,_h)));
+	i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Введите цвет окна > ");
+		scanf("%i %i %i", &r, &g, &b);
+		i++;
+	} while (!(r>=0 && r<256 && g>=0 && g<256 && b>=0 && b<256));
+	RGB _Color = RGB_Input(r,g,b);
+	i=0;
+	int _temp;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Видимость окна > ");
+		scanf("%i",&_temp);
+		i++;
+	} while (!(_temp==0 || _temp==1));
+	_hidden = _temp==0 ? true : false;
+	i=0;
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("Наличие рамок > ");
+		scanf("%i",&_temp);
+		i++;
+	} while (!(_temp==0 || _temp==1));
+	_frame = _temp==0 ? false : true;
+	Create(_Title,_x,_y,_w,_h,_Color,_hidden,_frame);
+	printf("==================================\n");
+	printf("Окно успешно создано!\n");
+}
+
+void help() {
+	printf("Описание команд:\n");
+	printf(" - info		Опрос окна\n");
+	printf(" - hshift	Сдвиг по горизонтали\n");
+	printf(" - vshift	Сдвиг по вертикали\n");
+	printf(" - hsize	Изменение ширины\n");
+	printf(" - vsize	Изменение высоты\n");
+	printf(" - color	Изменение цвета\n");
+	printf(" - visible	Изменение видимости\n");
+	printf(" - frame	Вкл/выкл рамки\n");
+	printf(" - exit		Завершить программу\n");
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	TModelWindow Window;
+	Window.SetScreenResolution();
+	Window.BuildWindow();
+	text cmd;
+	printf("Используйте команды для взаимодействия с окном:\n");
+	while (true) {
+		printf("?> ");
+		std::cin >> cmd;
+		if (strcmp(cmd,"info")==0)
+			Window.PollingWindow();
+		else if (strcmp(cmd,"hshift")==0)
+			Window.HorizontalShift();
+		else if (strcmp(cmd,"vshift")==0)
+			Window.VerticalShift();
+		else if (strcmp(cmd,"hsize")==0)
+			Window.HorizontalResize();
+		else if (strcmp(cmd,"vsize")==0)
+			Window.VerticalResize();
+		else if (strcmp(cmd,"color")==0)
+			Window.ChangeColor();
+		else if (strcmp(cmd,"visible")==0)
+			Window.ChangeVisible();
+		else if (strcmp(cmd,"frame")==0)
+			Window.ChangeFrame();
+		else if (strcmp(cmd,"exit")==0)
+			break;
+		else if (strcmp(cmd,"help")==0)
+			help();
+		else
+			printf("Команда не существует. Введите «help»\n");
+	}
+	Window.FileWrite();
+	system("pause");
+}
