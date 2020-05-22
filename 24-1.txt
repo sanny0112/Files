@@ -1,0 +1,40 @@
+#include "stdafx.h"
+#include <iostream>
+
+class division {
+private:
+	int first, second, divOp;
+	bool Init (int _second) {
+		if (_second != 0)
+			return true;
+		return false;
+	}
+public:
+	void Read(void) {
+		printf("Введите числитель: ");
+		scanf("%i",&first);
+		int i=0;
+		do {
+			if (i > 0)
+				printf("Ошибка! ");
+			printf("Введите знаменатель: ");
+			scanf("%i",&second);
+			i++;
+		} while (!Init(second));
+	}
+	void Part(void) {
+		divOp = first / second;
+	}
+	void Display (void) {
+		printf("Целая часть от деления: %i\n", divOp);
+	}
+};
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	division Operation;
+	Operation.Read();
+	Operation.Part();
+	Operation.Display();
+	system("pause");
+}
