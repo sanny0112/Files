@@ -26,9 +26,30 @@ public:
 		divOp = first / second;
 	}
 	void Display (void) {
+		FILE *f;
+		if ((f=fopen("Result.txt","w"))==NULL) {
+            printf("Не удалось открыть файл");
+            exit(1);
+        }
 		printf("Целая часть от деления: %i\n", divOp);
+		fprintf(f,"Целая часть от деления %i на %i: %i\n",first,second,divOp);
+		fclose(f);
 	}
 };
+
+void Analog() {
+	int first,second,i=0;
+	printf("I: ");
+	scanf("%i",&first);
+	do {
+		if (i > 0)
+			printf("Ошибка! ");
+		printf("II: ");
+		scanf("%i",&second);
+		i++;
+	} while (second==0);
+	printf("Целая часть от деления: %i\n", first/second);
+}
 
 int main() {
 	setlocale(LC_ALL, "Russian");
@@ -36,5 +57,6 @@ int main() {
 	Operation.Read();
 	Operation.Part();
 	Operation.Display();
+	Analog();
 	system("pause");
 }
